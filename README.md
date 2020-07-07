@@ -1,8 +1,9 @@
-# Octo Template
+# Sigef Crawler
 
-<small>_Optimized for python 3.6_</small>
+<small>_Optimized for python 3.6+_</small>
 
-This is a project template. Used in other repositories.
+This project aims in crawling through sigef pages, extract information and 
+parses it into a csv file.
 
 ----------------------
 
@@ -20,16 +21,18 @@ pip install -r requirements.txt
 
 ```bash 
 .
-└── octo-template
+└── sigef-crawler
     ├── data
-    │   ├── data.csv
-    │   ├── data.db
-    │   └── data.xlsx
+    │   ├── links.txt
+    │   └── outputs
+    │       ├── sigef-2020-07-05.csv
+    │       ├── sigef-2020-07-06.csv
+    │       └── sigef-2020-07-07.csv
     ├── docs
     │   └── CREDITS
     ├── src
     │   ├── __init__.py
-    │   └── settings.json
+    │   └── crawler.py
     ├── tests
     │   └── unittests
     │       └── __init__.py
@@ -57,30 +60,15 @@ Section aimed on clarifying some running issues.
 For running it, at the `~/src` directory just run:
 
 ```shell script
-python octo-template.py
+python crawler.py
 ``` 
 
 or, if importing it as a module, just run:
 ````python
-from octo-template import Template
+from crawler import SigefRequests
 
 if __name__ == '__main__':
-    Template('args', 'kwargs').__call__()
+    SigefRequests('path/to/file').__call__()
 ````
-
-### JSON structure
-
-````json
-{
-  "API_URL": "",
-  "API_KEY" : "",
-  "API_PROXY": {
-    "http": "",
-    "https": ""
-  }
-}
-````
-
-_obs: in order to run this application you must have a json file at `~/src/settings.json`. This json must follow the structure above._
 
 ---------------
