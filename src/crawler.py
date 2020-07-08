@@ -34,17 +34,13 @@ class SigefRequests:
             'denominação': [],
             'área': [],
             'data de entrada': [],
-            'situação - parcela': [],
+            'situação': [],
             'responsável técnico': [],
             'ART': [],
             'envio': [],
             'requerimento': [],
             'status': [],
             'data': [],
-            'situação - georeferência': [],
-            'natureza': [],
-            'número de parcelas': [],
-            'municípios': [],
             'nome': [],
             'cpf/cnpj': [],
         }
@@ -123,19 +119,26 @@ class SigefRequests:
             'class': 'table table-hover tabela-atributos'
         })
 
+        tables_ = [tables[0], tables[1], tables[2], tables[-1]]
+
         content_list = []
-        for table in tables:
+        for table in tables_:
             for row in table.find_all('td'):
                 content_list.append((row.text.strip()))
 
-        content_list.pop(7)
-        content_list.pop(11)
-        content_list.pop(14)
+        content_list.pop(content_list.index('Envio'))
+
+        if 'Nenhum requerimento' in content_list:
+            content_list.insert(9, '-')
+            content_list.insert(9, '-')
+
+        for elem in content_list:
+            if u'\u2013' in elem:
+                content_list[content_list.index(elem)] = \
+                    elem.replace(u'\u2013', '-')
 
         for key, value in zip(self.data.keys(), content_list):
             self.data.get(key).append(value)
-
-        self.parsing_to_csv()
 
     # Used in filtering_content
     def parsing_to_csv(self):
@@ -153,6 +156,8 @@ class SigefRequests:
     def __call__(self, *args, **kwargs):
         for url in tqdm(self.url_list):
             self.filtering_content(self.soup(self.requesting(url)))
+
+        self.parsing_to_csv()
 
 
 if __name__ == '__main__':
