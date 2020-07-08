@@ -43,6 +43,9 @@ class SigefRequests:
             'data': [],
             'nome': [],
             'cpf/cnpj': [],
+            'situação - georreferência': [],
+            'natureza': [],
+            'municípios': [],
         }
 
     # Used in __init__
@@ -131,6 +134,14 @@ class SigefRequests:
         if 'Nenhum requerimento' in content_list:
             content_list.insert(9, '-')
             content_list.insert(9, '-')
+
+        table_3_content = []
+        for row in tables[3].find_all('td'):
+            table_3_content.append(row.text.strip())
+
+        content_list.append(table_3_content[1])
+        content_list.append(table_3_content[2])
+        content_list.append(table_3_content[-1])
 
         for elem in content_list:
             if u'\u2013' in elem:
