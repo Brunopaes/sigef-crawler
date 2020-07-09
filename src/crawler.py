@@ -161,7 +161,7 @@ class SigefRequests:
         """
         pandas.DataFrame(self.data).set_index('código').to_csv(os.path.abspath(
             '../data/outputs/sigef-{}.csv'.format(datetime.date.today())),
-            encoding='latin-1'
+            encoding='latin-1', sep=';'
         )
 
     def __call__(self, *args, **kwargs):
