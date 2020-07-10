@@ -45,8 +45,31 @@ class SigefRequests:
             'cpf/cnpj': [],
             'situação - georreferência': [],
             'natureza': [],
+            'número de parcelas': [],
             'municípios': [],
+            'código do imóvel': [],
+            'shp - polígono': [],
+            'shp - vértices': [],
+            'shp - limites': [],
+            'kml - polígono': [],
+            'kml - vértices': [],
+            'kml - limites': [],
+            'csv - polígono': [],
+            'csv - vértices': [],
+            'csv - limites': [],
         }
+
+        self.export_list = [
+            "https://sigef.incra.gov.br/geo/exportar/parcela/shp/{}",
+            "https://sigef.incra.gov.br/geo/exportar/vertice/shp/{}",
+            "https://sigef.incra.gov.br/geo/exportar/limite/shp/{}",
+            "https://sigef.incra.gov.br/geo/exportar/parcela/kml/{}",
+            "https://sigef.incra.gov.br/geo/exportar/vertice/kml/{}",
+            "https://sigef.incra.gov.br/geo/exportar/limite/kml/{}",
+            "https://sigef.incra.gov.br/geo/exportar/parcela/csv/{}",
+            "https://sigef.incra.gov.br/geo/exportar/vertice/csv/{}",
+            "https://sigef.incra.gov.br/geo/exportar/limite/csv/{}"
+        ]
 
     # Used in __init__
     @staticmethod
@@ -135,13 +158,27 @@ class SigefRequests:
             content_list.insert(9, '-')
             content_list.insert(9, '-')
 
+        names = []
+        for row in tables[3].find_all('th'):
+            names.append(row.text)
+
         table_3_content = []
         for row in tables[3].find_all('td'):
             table_3_content.append(row.text.strip())
 
         content_list.append(table_3_content[1])
         content_list.append(table_3_content[2])
+        content_list.append(table_3_content[names.index('Número parcelas')])
         content_list.append(table_3_content[-1])
+
+        try:
+            content_list.append(table_3_content[names.index(
+                'Código do Imóvel (SNCR/INCRA)')])
+        except ValueError:
+            content_list.append('-')
+
+        for elem in self.export_list:
+            content_list.append(elem.format(content_list[0]))
 
         for elem in content_list:
             if u'\u2013' in elem:
