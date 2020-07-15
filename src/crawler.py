@@ -188,6 +188,8 @@ class SigefRequests:
         for key, value in zip(self.data.keys(), content_list):
             self.data.get(key).append(value)
 
+        self.parsing_to_csv()
+
     # Used in filtering_content
     def parsing_to_csv(self):
         """This function parses the acquired data into a csv file.
@@ -204,8 +206,6 @@ class SigefRequests:
     def __call__(self, *args, **kwargs):
         for url in tqdm(self.url_list):
             self.filtering_content(self.soup(self.requesting(url)))
-
-        self.parsing_to_csv()
 
 
 if __name__ == '__main__':
